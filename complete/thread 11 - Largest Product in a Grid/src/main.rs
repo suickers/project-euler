@@ -32,18 +32,18 @@ fn possible_directions(x: isize, y: isize) -> Vec<(isize, isize)> {
         let ex = x + (dx * (LEN-1));
         let ey = y + (dy * (LEN-1));
         
-        if (0..H).contains(&ex) && (0..W).contains(&ey) {
+        if (0..W).contains(&ex) && (0..H).contains(&ey) {
             possible.push((dx, dy));
         }
     }
     possible 
 }
 
-fn line_product(grid: &[[i8; 20]; 20], x: isize, y: isize) -> i64 {
-    let mut product = 1;
+fn coord_max_product(grid: &[[i8; 20]; 20], x: isize, y: isize) -> i64 {
+    let mut max = 0;
     
     for (dx, dy) in possible_directions(x, y) {
-        product = 1;
+        let mut product = 1;
         
         for k in 0..LEN {
             let nx = (x + (k*dx)) as usize; 
@@ -51,8 +51,9 @@ fn line_product(grid: &[[i8; 20]; 20], x: isize, y: isize) -> i64 {
             
             product *= grid[ny][nx] as i64;
         }
+        if product > max { max = product; }
     }
-    product
+    max
 }
 
 fn main() {
@@ -60,7 +61,7 @@ fn main() {
     
     for y in 0..H {
         for x in 0..W {
-            let p = line_product(&GRID, x, y);
+            let p = coord_max_product(&GRID, x, y);
             if p > max_n { max_n = p; }
         }
     }
