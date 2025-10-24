@@ -2,7 +2,7 @@ const DIRECTIONS: [(isize, isize); 4] = [(0, 1), (1, 0), (1, 1), (1, -1)];
 const W: isize = 20;
 const H: isize = 20;
 const LEN: isize = 4;
-const GRID: [[i64; 20]; 20] = [
+const GRID: [[i8; 20]; 20] = [
     [08, 02, 22, 97, 38, 15, 00, 40, 00, 75, 04, 05, 07, 78, 52, 12, 50, 77, 91, 08],
     [49, 49, 99, 40, 17, 81, 18, 57, 60, 87, 17, 40, 98, 43, 69, 48, 04, 56, 62, 00],
     [81, 49, 31, 73, 55, 79, 14, 29, 93, 71, 40, 67, 53, 88, 30, 03, 49, 13, 36, 65],
@@ -39,21 +39,20 @@ fn possible_directions(x: isize, y: isize) -> Vec<(isize, isize)> {
     possible 
 }
 
-fn line_product(grid: &[[i64; 20]; 20], x: isize, y: isize) -> i64 {
-    let mut max = 0;
+fn line_product(grid: &[[i8; 20]; 20], x: isize, y: isize) -> i64 {
+    let mut product = 1;
     
     for (dx, dy) in possible_directions(x, y) {
-        let mut product = 1;
+        product = 1;
         
         for k in 0..LEN {
-            let nx = x + (k*dx); 
-            let ny = y + (k*dy);
+            let nx = (x + (k*dx)) as usize; 
+            let ny = (y + (k*dy)) as usize;
             
-            product *= grid[ny as usize][nx as usize];
+            product *= grid[ny][nx] as i64;
         }
-        max = product;
     }
-    max
+    product
 }
 
 fn main() {
