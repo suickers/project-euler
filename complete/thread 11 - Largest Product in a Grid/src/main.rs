@@ -50,8 +50,8 @@ fn line_product(grid: &[[i64; 20]; 20], x: isize, y: isize) -> i64 {
             let ny = y + (k*dy);
             
             product *= grid[ny as usize][nx as usize];
-            if product > max { max = product; }
         }
+        max = product;
     }
     max
 }
