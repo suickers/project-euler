@@ -14,6 +14,7 @@ fn count_consecutive_primes(a: i32, b: i32) -> i32 {
 fn solution() -> i32 {
     let primes: Vec<_> = Primes::new()
         .take_while(|&x| x < 1000)
+        .map(|x| x as i32)
         .collect();
         
     let mut max_c = 0;
@@ -23,10 +24,10 @@ fn solution() -> i32 {
     for &b in &primes {
         let start = if b == 2 { -998 } else { -999 };
         for a in (start..=999).step_by(2) {
-            let c = count_consecutive_primes(a, b as i32);
+            let c = count_consecutive_primes(a, b);
             if c > max_c {
                 max_c = c;
-                max_ab = a * b as i32;
+                max_ab = a * b;
             }
         }
     }

@@ -44,11 +44,20 @@ pub mod primes {
 	            self.done_two = true;
 	            return Some(2);
 	        }
-	        loop {
-	            let x = self.next;
-	            self.next.checked_add(2)?;
-	            if is_prime(x) { return Some(x); }
-	        }
-	    }
+	        
+          	loop {
+          		let x = self.next;
+
+          		if let Some(v) = self.next.checked_add(2) {
+          			self.next = v;
+          		}
+          		
+          		if is_prime(x) {
+          			break Some(x);
+          		} else {
+          			continue;
+          		}
+          	}	
+		}
 	}
 }
