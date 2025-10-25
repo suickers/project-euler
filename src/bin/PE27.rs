@@ -1,33 +1,4 @@
-use project_euler::primes::is_prime;
-
-
-struct Primes {
-    next: i32,
-    done_two: bool,
-}
-
-impl Primes {
-    fn new() -> Self {
-        Self { next: 3, done_two: false }
-    }
-}
-
-impl Iterator for Primes {
-    type Item = i32;
-    
-    fn next(&mut self) -> Option<Self::Item> {
-        if !self.done_two {
-            self.done_two = true;
-            return Some(2);
-        }
-        while self.next < i32::MAX - 2 {
-            let x = self.next;
-            self.next += 2;
-            if is_prime(x) { return Some(x); }
-        }
-        None
-    }
-}
+use project_euler::primes::*;
 
 fn count_consecutive_primes(a: i32, b: i32) -> i32 {
     let mut n = 0;
@@ -52,10 +23,10 @@ fn solution() -> i32 {
     for &b in &primes {
         let start = if b == 2 { -998 } else { -999 };
         for a in (start..=999).step_by(2) {
-            let c = count_consecutive_primes(a, b);
+            let c = count_consecutive_primes(a, b as i32);
             if c > max_c {
                 max_c = c;
-                max_ab = a * b;
+                max_ab = a * b as i32;
             }
         }
     }

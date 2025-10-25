@@ -18,4 +18,33 @@ pub mod primes {
 		}
 		true 
 	}
+
+	pub struct Primes {
+		next: u128,
+		done_two: bool,
+	}
+
+	impl Primes {
+	    pub fn new() -> Self {
+	        Self { next: 3, done_two: false }
+	    }
+	}
+
+	
+	impl Iterator for Primes {
+	    type Item = u128;
+	    
+	    fn next(&mut self) -> Option<Self::Item> {
+	        if !self.done_two {
+	            self.done_two = true;
+	            return Some(2);
+	        }
+	        while self.next < u128::MAX - 2 {
+	            let x = self.next;
+	            self.next += 2;
+	            if is_prime(x) { return Some(x); }
+	        }
+	        None
+	    }
+	}
 }
