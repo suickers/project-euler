@@ -30,6 +30,11 @@ pub mod primes {
 	    }
 	}
 
+	impl Default for Primes {
+		fn default() -> Self {
+			Self::new()
+		}
+	}
 	
 	impl Iterator for Primes {
 	    type Item = u128;
@@ -39,12 +44,11 @@ pub mod primes {
 	            self.done_two = true;
 	            return Some(2);
 	        }
-	        while self.next < u128::MAX - 2 {
+	        loop {
 	            let x = self.next;
-	            self.next += 2;
+	            self.next.checked_add(2)?;
 	            if is_prime(x) { return Some(x); }
 	        }
-	        None
 	    }
 	}
 }
