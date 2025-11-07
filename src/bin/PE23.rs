@@ -75,5 +75,5 @@ fn main() {
 			sum += idx;
 		}
 	}
-	println!("{}", sum);
+	assert_eq!(sum, 4179871);
 }
