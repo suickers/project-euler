@@ -1,14 +1,4 @@
-fn is_prime(n: u64) -> bool {
-	if n < 2 { return false; }
-	if n % 2 == 0 { return n == 2; }
-
-	let mut v = 3;
-	while v < n / v {
-		if n % v == 0 { return false; }
-		v += 2; 
-	}
-	true
-}
+use project_euler::primes::is_prime;
 
 fn main() {
 	let n: u64 = 600851475143;
