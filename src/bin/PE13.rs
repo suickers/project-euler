@@ -4,7 +4,7 @@ use std::io::BufReader;
 use std::fs::File;
 
 fn main() -> io::Result<()> {
-	let f = File::open("data/euler13.txt")?;
+	let f = File::open("../../data/euler13.txt")?;
 	let reader = BufReader::new(f);
 
 	let mut vec = Vec::new();
