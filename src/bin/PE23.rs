@@ -1,55 +1,47 @@
 // it's kind of slow. might come back to it to optimise
 
-fn sum_divisors(num: usize) -> usize {
-	let mut n = num;
-	let mut e = 0;
-	let mut sum = 1; 
-	let mut temp = 0;
-	
-	while n % 2 == 0 {
-		n /= 2; 
-		e += 1; 
-	}
-	if e > 0 {
-		for i in 1..=e {
-			temp += 2usize.pow(i);
-		}
-	}
-	sum *= 1 + temp;
-	
-	
-	let mut p = 3;
-	while p <= n / p {
-		temp = 0;
-		e = 0;
-		while n % p == 0 { 
-			n /= p; 
-			e += 1; 
-		}
-		if e > 0 {
-			for i in 1..=e {
-				temp += p.pow(i);
-			}
-		}
-		sum *= 1 + temp;
-		p += 2; 
-	}
+use project_euler::primes::Primes; 
 
+fn sum_divisors(num: usize, primes: &[usize]) -> usize {
+	let mut n = num;
+	let mut sum = 1; 
+
+	for &p in primes {
+		if p <= n / p {
+			let mut temp = 0;
+			let mut e = 0;
+
+			while n % p == 0 {
+				n /= p;
+				e += 1; 
+			}
+			if e > 0 {
+				for i in 1..=e {
+					temp += p.pow(i);
+				}
+			}
+			sum *= 1 + temp;
+		}
+	}
 	if n > 1 { sum *= 1 + n; }
 	sum - num
 }
 
-fn is_abundant(n: usize) -> bool {
+fn is_abundant(n: usize, primes: &[usize]) -> bool {
 	if n < 12 { return false; }
-	if sum_divisors(n) > n { return true; }
+	if sum_divisors(n, primes) > n { return true; }
 	false
 }
 
-
 fn main() {
+	let primes: Vec<_> = Primes::new()
+		.take_while(|&x| x < 168)
+		.map(|x| x as usize)
+		.collect();
+		
 	let mut abundants = Vec::new(); 
 	for i in 1..=28123 {
-		if is_abundant(i) {
+		if is_abundant(i, &primes) {
 			abundants.push(i);
 		}
 	}
