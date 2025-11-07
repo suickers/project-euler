@@ -21,7 +21,7 @@ fn sum_divisors(num: usize, primes: &[usize]) -> usize {
 				}
 			}
 			sum *= 1 + temp;
-		}
+		} else { break; }
 	}
 	if n > 1 { sum *= 1 + n; }
 	sum - num
