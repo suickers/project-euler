@@ -34,11 +34,7 @@ fn main() {
 		}
 	}
 
-	let mut sum = 0;
-
-	for item in set {
-		sum += item;
-	}
-
+	let sum: usize = set.into_iter().sum();
+	
 	assert_eq!(sum, 45228);
 }
