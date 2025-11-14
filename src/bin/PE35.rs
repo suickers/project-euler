@@ -1,28 +1,7 @@
 use std::iter::successors;
 use std::time::Instant;
+use project_euler::primes::sieve;
 
-// note to self add sieve to primes library 
-fn sieve(n: usize) -> Vec<bool> {
-    let mut vec = vec![true; n + 1];
-    vec[0] = false; 
-    vec[1] = false;
-    
-    for i in (4..=n).step_by(2) {
-        vec[i] = false;
-    }
-    
-    let mut p = 3;
-    
-    while p <= n / p {
-        if vec[p] {
-            for i in (p*p..=n).step_by(p) {
-                vec[i] = false;
-            }
-        }
-        p += 2;
-    }
-    vec
-}
 
 fn digits_of(n: usize) -> Vec<usize> {
     successors(Some(n), |x| {

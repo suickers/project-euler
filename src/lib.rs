@@ -19,6 +19,33 @@ pub mod primes {
 		true 
 	}
 
+	pub fn sieve<T>(n: T) -> Vec<bool>
+	where
+		T: PrimInt + ToPrimitive
+	{
+		let n = n.to_usize().unwrap();
+
+		let mut vec = vec![true; n + 1];
+	    vec[0] = false; 
+	    vec[1] = false;
+	    
+	    for i in (4..=n).step_by(2) {
+	        vec[i] = false;
+	    }
+	    
+	    let mut p = 3;
+	    
+	    while p <= n / p {
+	        if vec[p] {
+	            for i in (p*p..=n).step_by(p) {
+	                vec[i] = false;
+	            }
+	        }
+	        p += 2;
+	    }
+	    vec
+	}
+
 	pub struct Primes {
 		next: u128,
 		done_two: bool,
