@@ -17,16 +17,16 @@ fn checker(n: usize, facts: &[usize]) -> bool {
 }
 
 fn fact(n: usize) -> usize {
-    (1..=n).fold(1, |a, x| a * x)
+    (1..=n).product()
 }
 
 fn main() {
     let t = Instant::now();
     
-    let limit = 6 * fact(9);
+    let limit = 88774;
     
     let facts = (0..10)
-        .map(|x| fact(x))
+        .map(fact)
         .collect::<Vec<usize>>();
     
     let sum = (1..=limit)
