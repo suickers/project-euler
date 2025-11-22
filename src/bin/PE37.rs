@@ -8,7 +8,7 @@ fn truncate(n: usize, sieve: &[bool]) -> bool {
 	let exp1 = successors(Some(n), |x| {
 		if *x >= 10 { Some(x / 10) } else { None }
 	})
-	.all(|x| sieve[x]);
+		.all(|x| sieve[x]);
 
 	let exp2 = (1..len)
 		.rev()
