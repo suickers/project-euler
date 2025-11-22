@@ -1,35 +1,53 @@
-fn checker(n: usize, x: usize, y: usize) -> bool {
-	let fraction = ((10*n)+x) / ((10*n)+y);
-	if fraction != x / y {
-		return false;
-	} 
+use std::time::Instant;
 
-	let fraction = ((10*x)+n) / ((10*n)+y);
-	if fraction != x / y {
-		return false;
-	} 
-
-	let fraction = ((10*x)+n) / ((10*y)+n);
-	if fraction != x / y {
-		return false;
-	} 
-
-	let fraction = ((10*n)+x) / ((10*y)+n);
-	if fraction != x / y {
-		return false;
-	} 
-	true
-	
+fn gcd(mut a: u64, mut b: u64) -> u64 {
+	loop {
+		if b == 0 { break a; }
+		(a, b) = (b, a % b);
+	}
 }
 
 fn main() {
-	for i in 1..=99 {
-		for j in 1..99 {
-			for k in 1..99 {
-				if checker(k, i, j) {
-					println!("{}, {}, {}", i, j, k);
-				}
+	let time = Instant::now();
+	
+	let mut num_product = 1; 
+	let mut den_product = 1;
+	
+	for n in 10..100 {
+		for d in n+1..100 {
+			let n_tens = n / 10;
+			let n_units = n % 10;
+
+			let d_tens = d / 10;
+			let d_units = d % 10; 
+
+			if n_tens == d_tens && n_tens != 0 && d_tens != 0
+				&& n_units * d == d_units * n
+			{
+				num_product *= n_units;
+				den_product *= d_units;	
+			}
+			if n_tens == d_units && n_tens != 0 && d_units != 0
+				&& n_units * d == d_tens * n
+			{
+				num_product *= n_units;
+				den_product *= d_units; 		
+			}
+			if n_units == d_tens && n_units != 0 && d_tens != 0
+				&& n_tens * d == d_units * n
+			{
+				num_product *= n_tens;
+				den_product *= d_units; 						
+			}
+			if n_units == d_units && n_units != 0 && d_units != 0
+				&& n_tens * d == d_tens * n
+			{
+				num_product *= n_tens;
+				den_product *= d_tens;								
 			}
 		}
 	}
+	
+	assert_eq!(den_product / gcd(num_product, den_product), 100);
+	println!("{:?}", time.elapsed());
 }
