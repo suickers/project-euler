@@ -15,35 +15,18 @@ fn main() {
 	
 	for n in 10..100 {
 		for d in n+1..100 {
+		
 			let n_tens = n / 10;
 			let n_units = n % 10;
 
 			let d_tens = d / 10;
 			let d_units = d % 10; 
 
-			if n_tens == d_tens && n_tens != 0 && d_tens != 0
-				&& n_units * d == d_units * n
-			{
-				num_product *= n_units;
-				den_product *= d_units;	
-			}
-			if n_tens == d_units && n_tens != 0 && d_units != 0
-				&& n_units * d == d_tens * n
-			{
-				num_product *= n_units;
-				den_product *= d_units; 		
-			}
 			if n_units == d_tens && n_units != 0 && d_tens != 0
 				&& n_tens * d == d_units * n
 			{
 				num_product *= n_tens;
 				den_product *= d_units; 						
-			}
-			if n_units == d_units && n_units != 0 && d_units != 0
-				&& n_tens * d == d_tens * n
-			{
-				num_product *= n_tens;
-				den_product *= d_tens;								
 			}
 		}
 	}
