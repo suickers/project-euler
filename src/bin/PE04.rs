@@ -1,18 +1,27 @@
+use std::iter::successors;
+use std::time::Instant;
+
 fn is_palindrome(n: usize) -> bool {
-    let s = n.to_string();
-    
-    s.chars().eq(s.chars().rev())
+    n == reverse(n)
+}
+
+fn reverse(n: usize) -> usize {
+    successors(Some(n), |x| {
+        if *x >= 10 { Some(x / 10) } else { None }
+    })
+    .map(|x| x % 10)
+    .fold(0, |acc, d| (acc * 10) + d)
 }
 
 fn main() {
-    let mut max_n = 0; 
+    let time = Instant::now();
     
-    for i in 1..1000 {
-        for j in 1..1000 {
-            let res = if is_palindrome(i*j) { i*j } else { continue };
-            if res > max_n { max_n = res; }
-        }
-    }
-    
+    let max_n = (1..1000)
+        .flat_map(|i| (1..1000).map(move |j| i * j))
+        .filter(|p| is_palindrome(*p))
+        .max()
+        .unwrap_or(0);
+        
     assert_eq!(906609, max_n);
+    println!("{:?}", time.elapsed());
 }
