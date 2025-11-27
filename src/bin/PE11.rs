@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 const DIRECTIONS: [(isize, isize); 4] = [(0, 1), (1, 0), (1, 1), (1, -1)];
 const W: isize = 20;
 const H: isize = 20;
@@ -25,46 +27,43 @@ const GRID: [[i8; 20]; 20] = [
     [01, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 01, 89, 19, 67, 48],   
 ];
 
-fn possible_directions(x: isize, y: isize) -> Vec<(isize, isize)> {
-    let mut possible = Vec::new(); 
-    
-    for (dx, dy) in DIRECTIONS {
-        let ex = x + (dx * (LEN-1));
-        let ey = y + (dy * (LEN-1));
-        
-        if (0..W).contains(&ex) && (0..H).contains(&ey) {
-            possible.push((dx, dy));
-        }
-    }
-    possible 
+fn possible_directions(
+    x: isize, 
+    y: isize
+) -> impl Iterator<Item = (isize, isize)> {
+    DIRECTIONS.into_iter()
+        .filter(move |(dx, dy)| {
+            let ex = x + (dx * (LEN-1));
+            let ey = y + (dy * (LEN-1));
+            
+            (0..W).contains(&ex) && (0..H).contains(&ey)
+        })
 }
 
 fn coord_max_product(grid: &[[i8; 20]; 20], x: isize, y: isize) -> i64 {
-    let mut max = 0;
-    
-    for (dx, dy) in possible_directions(x, y) {
-        let mut product = 1;
-        
-        for k in 0..LEN {
-            let nx = (x + (k*dx)) as usize; 
-            let ny = (y + (k*dy)) as usize;
-            
-            product *= grid[ny][nx] as i64;
-        }
-        if product > max { max = product; }
-    }
-    max
+    possible_directions(x, y)
+        .map(|(dx, dy)| { 
+            (0..LEN)
+                .map(|k| ((x+(k*dx)) as usize, (y+(k*dy)) as usize) )
+                .map(|(nx, ny)| grid[ny][nx] as i64)
+                .product()
+        })
+        .max()
+        .unwrap_or(0)
 }
 
 fn main() {
-    let mut max_n = 0;
+    let time = Instant::now();
     
-    for y in 0..H {
-        for x in 0..W {
-            let p = coord_max_product(&GRID, x, y);
-            if p > max_n { max_n = p; }
-        }
-    }
+    let max_n = (0..H)
+        .flat_map(|y| {
+            (0..W).map(move |x| (x, y))
+        })
+        .map(|(x, y)| coord_max_product(&GRID, x, y))
+        .max()
+        .unwrap_or(0);
+        
     
     assert_eq!(70600674, max_n);
+    println!("{:?}", time.elapsed())
 }
