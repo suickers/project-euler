@@ -21,32 +21,27 @@ fn digits_of(a: usize) -> impl Iterator<Item = usize> {
     .map(|x| x % 10)
 }
 
-fn concat_arr(a: &[usize]) -> usize {
-    a.into_iter().try_fold(0, |acc, x| { 
-        if acc > 987_654_321 { None } 
-        else { Some(acc * 10usize.pow(x.ilog10() + 1) + x) }
-    })
-    .unwrap_or(1)
+fn length_of(x: usize) -> u32 {
+    x.ilog10() + 1
 }
 
 fn main() {
     let time = Instant::now();
     
-    let mut max_p = 0;
-    let mut vec = Vec::new(); 
-    
-    for i in 1..=9999 {
-        vec.clear();
-        for n in 1..=9 {
-            vec.push(i * n); 
-
-            let x = concat_arr(&vec);
-            if x.ilog10() + 1 > 9 { break; }
-            if is_pandigital(x) && x > max_p { 
-                max_p = x; 
-            }
-        }
-    }
+    let max_p = (1..=9999)
+        .flat_map(|i| {
+            (1..=9)
+                .map(move |n| i*n)
+                .scan(0, |state, x| {
+                    *state = *state * 10usize.pow(length_of(x)) + x;
+                    if length_of(*state) > 9 { return None; }
+                    Some(*state)
+                })
+                .filter(|p| is_pandigital(*p))
+        })
+        .max()
+        .unwrap_or(0);
+        
     assert_eq!(max_p, 932718654);
     
     println!("{:?}", time.elapsed()); 
