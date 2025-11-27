@@ -28,23 +28,14 @@ fn length(n: usize, memo: &mut Vec<Option<usize>>) -> usize {
 fn main() {
     let time = Instant::now();
     let lim = 1_000_000;
-    
-	let mut max_n = 0;
-	let mut max_s = 0;
-	let mut memo = vec![None; lim + 1];
-	
-	for i in 1..lim {
-		let s = length(i, &mut memo);
 
-		if s > max_s {
-			max_s = s;
-			max_n = i;
-		}
-	}
+	let mut memo = vec![None; lim + 1];
+
+    let max_n = (1..lim)
+        .max_by_key(|i| length(*i, &mut memo))
+        .unwrap_or(0);
 	assert_eq!(max_n, 837799);
-	
-	
-	
+
 	println!("{:?}", time.elapsed());
 	// ~ 384.100087ms with hashmap and no insert check
 	// ~ 248.277903ms with hashmap and n < 1mil check
