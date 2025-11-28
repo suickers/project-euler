@@ -9,30 +9,19 @@ fn check_triangle(a: usize, b: usize, p: usize) -> bool {
 fn main() {
     let time = Instant::now();
     
-    let mut max_p = 0;
-    let mut max_count = 0;
-    
-    for p in 1..=1000 {
-        
-        let mut count = 0;
-    
-        for a in 1..=p/3 {
-            for b in a..=p/2 {
+    let max_p = (1..=1000)
+        .map(|p| {
+            let count = (1..=p/3)
+                .flat_map(|a| (1..=p/2).map(move |b| (a, b)))
+                .filter(|(a, b)| check_triangle(*a, *b, p))
+                .count();
                 
-                if check_triangle(a, b, p) {
-                    count += 1; 
-                }
-                
-            }
-        }
+            (p, count)
+        })
+        .max_by_key(|(_, count)| *count)
+        .map(|(p, _)| p)
+        .unwrap();
         
-        if count > max_count {
-            max_count = count;
-            max_p = p;
-        }
-    }
-    
-    
-    println!("{}", max_p);
+    assert_eq!(max_p, 840);
     println!("{:?}", time.elapsed());
 }
