@@ -22,7 +22,9 @@ fn main() {
 			let d_tens = d / 10;
 			let d_units = d % 10; 
 
-			if n_units == d_tens && n_units != 0 && d_tens != 0
+			if  n_units == d_tens 
+				&& n_units != 0 
+				&& d_tens != 0
 				&& n_tens * d == d_units * n
 			{
 				num_product *= n_tens;
