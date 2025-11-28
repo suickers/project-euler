@@ -1,3 +1,4 @@
+use std::time::Instant;
 
 fn tri_num(n: u64) -> (u64, u64) {
     if n % 2 == 0 { (n/2, n+1) }
@@ -27,15 +28,14 @@ fn divcount(mut n: u64) -> u64 {
 }
 
 fn main() {
-	let out;
-    let mut n = 1;
-    loop {
-        let (t1, t2) = tri_num(n);
-        if divcount(t1) * divcount(t2) > 500 {
-            out = t1 * t2;
-            break;
-        }
-        n += 1;
-    }
+    let time = Instant::now();
+    
+    let out = (1..)
+        .map(|x| tri_num(x))
+        .find(|(t1, t2)| divcount(*t1) * divcount(*t2) > 500)
+        .map(|(t1, t2)| t1 * t2)
+        .unwrap();
+
     assert_eq!(76576500, out);
+    println!("{:?}", time.elapsed());
 }
