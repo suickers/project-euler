@@ -1,6 +1,7 @@
 use std::time::Instant;
 
-const IDX_RANGE: [usize; 7] = [9, 180, 2700, 36000, 450000, 5600000, 63000000];
+const IDX_RANGE: [usize; 7] 
+	= [9, 180, 2700, 36000, 450000, 5600000, 63000000];
 
 fn digit_at(n: usize) -> usize {
 	if n < 10 { return n; }
@@ -18,6 +19,7 @@ fn digit_at(n: usize) -> usize {
 
     let a = (0..chunk)
         .fold(n, |acc, x| acc - IDX_RANGE[x]);
+        
     let q = a / (digit_len);
     let r = a % (digit_len);
     
