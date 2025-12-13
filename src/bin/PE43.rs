@@ -32,7 +32,7 @@ impl Iterator for Perm {
 
 		let mut i = n - 2;
 		while i > 0 && self.v[i] >= self.v[i + 1] {
-			i = i.saturating_sub(1); 
+			i -= 1; 
 		}
 
 		if self.v[i] >= self.v[i+1] {
@@ -42,7 +42,7 @@ impl Iterator for Perm {
 
 		let mut j = n - 1;
 		while j > i && self.v[j] <= self.v[i] {
-			j = j.saturating_sub(1); 
+			j -= 1; 
 		}
 
 		self.v.swap(i, j);
