@@ -28,6 +28,10 @@ fn concat(a: usize, b: usize, c: usize) -> usize {
     (a * 10usize.pow(n1) + b) * 10usize.pow(n2) + c
 }
 
+fn condition(p: usize, p1: usize, p2: usize, sieve: &[bool]) -> bool {
+	sieve[p1] && sieve[p2] && are_perms(p, p1, p2) && p != 1487
+}
+
 fn main() {
 
 	let time = Instant::now(); 
@@ -45,13 +49,11 @@ fn main() {
 					let p1 = p + d;
 					let p2 = p + 2*d;
 					
-					if sieve[p1] && sieve[p2]
-						&& are_perms(p, p1, p2) 
-						&& p != 1487 {
-							Some((p, p1, p2))
-						} else {
-							None
-						}
+					if condition(p, p1, p2, &sieve) {
+						Some((p, p1, p2))
+					} else {
+						None
+					}
 				})
 		})
 		.next()
