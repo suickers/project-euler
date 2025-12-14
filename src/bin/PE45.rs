@@ -13,16 +13,10 @@ fn is_pent(n: usize) -> bool {
 fn main() {
 	let time = Instant::now(); 
 
-	let mut ans = 0; 
-
-	for i in 144.. {
-		let hex = i * (2*i - 1);
-		
-		if is_pent(hex) {
-			ans = hex; 
-			break;
-		}
-	}
+	let ans = (144..)
+		.map(|i| i * (2*i - 1))
+		.find(|&hex| is_pent(hex))
+		.unwrap_or(0);
 	
 	assert_eq!(ans, 1533776805);
 	println!("{:?}", time.elapsed()); 
